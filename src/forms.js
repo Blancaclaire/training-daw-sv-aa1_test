@@ -15,15 +15,33 @@ const handleFillCountry = _.debounce((ev) => {
 
         node.appendChild(row)
     }
-  }, 300);
+}, 300);
 
-//
+//Referencias
+
 function validateName(event) {
     const name = event.target.value
+
     console.log('validate name: ' + name);
+    console.log(' la longitud del nombre es:' + name.length)
+
+    // const nameValue = inputName.value.trim();
+
+    if (!name || name.length < 8) {
+
+        showElementWithClassName(event.target, 'invalid-feedback')
+    }
+    else {
+
+        hideElementWithClassName(event.target, 'valid-feedback')
+   
+    }
 
     return false
+
 }
+
+
 
 function validatePassword(event) {
     // password should be at least 8 of length
@@ -32,12 +50,113 @@ function validatePassword(event) {
     // should contains at least one number
     // otherwise, password is invalid
     const password = event.target.value
+
+    const arrayMayus = ["ABCDEFGHIJKLMNÑOPQRSTUVWXYZ"];
+
+    const arrayMins = ["abcdefjhijklmnñoprstuvwxyz"];
+
+    const arrayNums = ["1234567890"];
+
+    let hasCapital = false ;
+    let hasLower = false ;
+    let hasNum = false ;
+
+
+    for (let index = 0; index < arrayMins.length; index++) {
+        
+        for (let indexj = 0; indexj < password.length; indexj++) {
+            
+            if(arrayMins[index] = password[indexj]){
+                hasLower = true
+            }
+            
+        }
+    }
+
+    for (let index = 0; index < arrayMayus.length; index++) {
+        
+        for (let indexj = 0; indexj < password.length; indexj++) {
+            
+            if(arrayMayus[index] = password[indexj]){
+                hasCapital = true
+            }
+            
+        }
+    }
+
+  
+    for (let index = 0; index < arrayNums.length; index++) {
+        
+        for (let indexj = 0; indexj < password.length; indexj++) {
+            
+            if(arrayNums[index] = password[indexj]){
+                hasNum = true
+            }
+            
+        }
+    }
+
+    if(  !password || password.length < 8 || !hasCapital || !hasLower || !hasNum){
+        showElementWithClassName(event.target, 'invalid-feedback')
+    }
+
+    else{
+        hideElementWithClassName(event.target, 'valid-feedback')
+    }
+
+
     return false
 }
 
 function validateEmail(event) {
     const email = event.target.value
+    let position = 0;
+    let hasArroba = false;
+    let hascontentBefore = false;
+    let hascontentAfter = false;
+    let isEmail =false;
+    for (let index = 0; index < email.length; index++) {
+        if(email[index] == '@'){
+            console.log('has @')
+            hasArroba = true
+            position = index;
+        }
+        
+    }
 
+    const content = " ";
+
+    if(hasArroba){
+
+
+        for (let index = 0; index < position; index++) {
+            if( !(email[index]) == content){
+                hascontentBefore = true
+            }
+            
+        }
+
+        for (let index = position+1; index < email.length; index++) {
+            if( !(email[index]) == content){
+                hascontentAfter = true
+            }
+            
+        }
+    }
+
+    if(hascontentAfter && hascontentBefore){
+        isEmail = true 
+    }
+
+    if(!isEmail){
+        showElementWithClassName(event.target, 'invalid-feedback')
+    }
+    else{
+        
+        hideElementWithClassName(event.target, 'valid-feedback')
+
+    }
+    
     return false
 }
 
